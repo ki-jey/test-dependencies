@@ -43,9 +43,10 @@ pipeline {
                 script {
                     sh """
                         mvn org.cyclonedx:cyclonedx-maven-plugin:makeAggregateBom -DincludeTestScope=true -DfailOnError=false
+                        ls && ls ./target
                     """
                     withCredentials([string(credentialsId: 'dependency-track-token', variable: 'API_KEY')]) {
-                        dependencyTrackPublisher artifact: 'target/bom.json', projectName: 'ci-integrated', projectVersion: '1.1.1', dependencyTrackApiKey: API_KEY
+                        dependencyTrackPublisher artifact: './target/bom.json', dependencyTrackApiKey: API_KEY, projectName: 'ci-integrated-2', projectVersion: '1.1.1'
                     }
                 }//script
             }//steps
