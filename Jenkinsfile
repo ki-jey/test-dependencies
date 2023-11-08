@@ -47,8 +47,22 @@ pipeline {
                         ls && ls ./target
                     """
                     withCredentials([string(credentialsId: 'dependency-track-token', variable: 'API_KEY')]) {
-                        dependencyTrackPublisher artifact: './target/bom.json', dependencyTrackApiKey: API_KEY, projectName: 'ci-integrated-2', projectVersion: "$CURRENT_VERSION", synchronous: true
+                        dependencyTrackPublisher artifact: './target/bom.json', dependencyTrackApiKey: API_KEY, projectName: 'ci-integrated-2', projectVersion: "1.5.0", synchronous: true
                     }
+                }//script
+            }//steps
+        }//stage
+
+        stage('Version') {
+            options {
+                timeout(time: 5, unit: 'MINUTES')
+            }
+            steps {
+                script {
+                    CURRENT_VERSION = sh (returnStdout: true, script: "mvn help:evaluate -Dexpression=project.version -q -DforceStdout").trim()
+                    echo "$CURRENT_VERSION"
+                    CURRENT_VERSION_MAVEN_PLUGIN = readMavenPom().getVersion()
+                    echo "$CURRENT_VERSION_MAVEN_PLUGIN"
                 }//script
             }//steps
         }//stage
