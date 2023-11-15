@@ -17,20 +17,13 @@ pipeline {
                 timeout(time: 30, unit: 'MINUTES')
             }
             steps {
-//                checkout([
-//                        $class: 'GitSCM',
-//                        branches: [[name: 'master']],
-//                        doGenerateSubmoduleConfigurations: false,
-//                        extensions: [[$class: 'LocalBranch']],
-//                        userRemoteConfigs: [[url: "https://github.com/ki-jey/test-dependencies.git"]]
-//                ])
                 checkout scm
 
                 script {
                     sh """
                         mvn org.owasp:dependency-check-maven:check -Dformats='ALL' -DfailOnError=false
                     """
-//                    zip archive: true, glob: 'target/dependency-check-report*.*', zipFile: "dependency-check-reports.zip";
+                    zip archive: true, glob: 'target/dependency-check-report*.*', zipFile: "dependency-check-reports.zip";
                     dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
                 }//script
             }//steps
@@ -44,7 +37,6 @@ pipeline {
                     CURRENT_VERSION = readMavenPom().getVersion()
                     sh """
                         mvn org.cyclonedx:cyclonedx-maven-plugin:makeBom -DincludeTestScope=true -DprojectType=library
-                        ls && ls ./target
                     """
                     withCredentials([string(credentialsId: 'dependency-track-token', variable: 'API_KEY')]) {
                         dependencyTrackPublisher artifact: './target/bom.json', dependencyTrackApiKey: API_KEY, projectName: 'ci-integrated-2', projectVersion: "1.5.0", synchronous: true
