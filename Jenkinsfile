@@ -39,7 +39,7 @@ pipeline {
                         mvn org.cyclonedx:cyclonedx-maven-plugin:makeBom -DincludeTestScope=true -DprojectType=library
                     """
                     withCredentials([string(credentialsId: 'dependency-track-token', variable: 'API_KEY')]) {
-                        dependencyTrackPublisher artifact: './target/bom.json', dependencyTrackApiKey: API_KEY, projectName: 'ci-integrated-2', projectVersion: "1.5.0", synchronous: true
+                        dependencyTrackPublisher artifact: './target/bom.json', dependencyTrackApiKey: API_KEY, projectName: 'ci-integrated-2', projectVersion: "1.5.0", paretName: 'ETS', parentVersion: '1.1.1', synchronous: true
                     }
                 }//script
             }//steps
