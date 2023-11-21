@@ -42,7 +42,7 @@ pipeline {
                         mvn org.cyclonedx:cyclonedx-maven-plugin:makeBom -DincludeTestScope=true -DprojectType=library
                         """
                             withCredentials([string(credentialsId: 'dependency-track-token', variable: 'API_KEY')]) {
-                                dependencyTrackPublisher artifact: './target/bom.json', dependencyTrackApiKey: API_KEY, projectName: 'core-image', projectVersion: "1.8.0", parentUUID: 'e1451e9c-b4d5-4670-b6af-42bcedbf3d79', parentVersion: '1.1.1', synchronous: true
+                                dependencyTrackPublisher artifact: './target/bom.json', dependencyTrackApiKey: API_KEY, projectName: 'core-devkit', projectVersion: "3.0.2", parentUUID: "e1451e9c-b4d5-4670-b6af-42bcedbf3d79", parentVersion: "1.1.1", psrentName: "ETS", synchronous: true
                             }
                         }//script
                     }//steps
