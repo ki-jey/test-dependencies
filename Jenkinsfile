@@ -42,7 +42,10 @@ pipeline {
                         mvn org.cyclonedx:cyclonedx-maven-plugin:makeBom -DincludeTestScope=true -DprojectType=library
                         """
                             withCredentials([string(credentialsId: 'dependency-track-token', variable: 'API_KEY')]) {
-                                dependencyTrackPublisher artifact: './target/bom.json', dependencyTrackApiKey: API_KEY, autoCreate: true, parentName: "ETS", parentVersion: "1.1.1", projectName: "core-gateway", projectVersion: "3.0.2", synchronous: true
+                                dependencyTrackPublisher artifact: './target/bom.json', dependencyTrackApiKey: API_KEY, autoCreate: true, parentName: 'ETS-3', projectName: 'core-permission', projectVersion: '3.0.2', synchronous: true
+                            }
+                            withCredentials([string(credentialsId: 'dependency-track-token', variable: 'API_KEY')]) {
+                                dependencyTrackPublisher artifact: './target/bom.xml', dependencyTrackApiKey: API_KEY, parentUUID: 'c6944638-a1ae-4e0a-b771-4af060dbdf7e', projectName: 'core-qwerty', projectVersion: '0.0.1', synchronous: true
                             }
                         }//script
                     }//steps
