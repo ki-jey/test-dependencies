@@ -24,6 +24,7 @@ pipeline {
                         script {
                             sh """
                         mvn org.owasp:dependency-check-maven:check -Dformats='ALL' -DfailOnError=false
+                        rm ./dependency-check-reports.zip
                     """
                             zip archive: true, glob: 'target/dependency-check-report*.*', zipFile: "dependency-check-reports.zip";
                             dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
@@ -41,7 +42,7 @@ pipeline {
                         mvn org.cyclonedx:cyclonedx-maven-plugin:makeBom -DincludeTestScope=true -DprojectType=library
                         """
                             withCredentials([string(credentialsId: 'dependency-track-token', variable: 'API_KEY')]) {
-                                dependencyTrackPublisher artifact: './target/bom.json', dependencyTrackApiKey: API_KEY, projectName: 'core-hotfolder', projectVersion: "1.3.0", parentName: 'ETS', parentVersion: '1.1.1', synchronous: true
+                                dependencyTrackPublisher artifact: './target/bom.json', dependencyTrackApiKey: API_KEY, projectName: 'core-hotfolder', projectVersion: "1.3.0", parentUUID: 'e1451e9c-b4d5-4670-b6af-42bcedbf3d79', parentVersion: '1.1.1', synchronous: true
                             }
                         }//script
                     }//steps
