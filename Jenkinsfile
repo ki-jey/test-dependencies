@@ -41,8 +41,11 @@ pipeline {
                             sh """
                         mvn org.cyclonedx:cyclonedx-maven-plugin:makeBom -DincludeTestScope=true -DprojectType=library
                         """
-                            withCredentials([string(credentialsId: 'dependency-track-token', variable: 'API_KEY')]) {
-                                dependencyTrackPublisher artifact: './target/bom.json', dependencyTrackApiKey: API_KEY, projectName: 'core-VNE', projectVersion: '5.3', synchronous: true, projectProperties: [tags: ['microservice', 'core', 'ets'], group: 'ETS-group', parentId: 'e1451e9c-b4d5-4670-b6af-42bcedbf3d79']
+//                            withCredentials([string(credentialsId: 'dependency-track-token', variable: 'API_KEY')]) {
+//                                dependencyTrackPublisher artifact: './target/bom.json', dependencyTrackApiKey: API_KEY, projectName: 'core-VNE', projectVersion: '5.3', synchronous: true, projectProperties: [tags: ['microservice', 'core', 'ets'], group: 'ETS-group', parentId: 'e1451e9c-b4d5-4670-b6af-42bcedbf3d79']
+//                            }
+                            withCredentials([string(credentialsId: 'new-dependency-track-token', variable: 'API_KEY')]) {
+                                dependencyTrackPublisher artifact: './target/bom.json', dependencyTrackApiKey: API_KEY, projectName: 'core-Vit', projectVersion: '5.3', synchronous: true, projectProperties: [tags: ['microservice', 'dev', 'ets'], group: 'dev', parentId: '607d4039-c03f-4c82-892e-5b2f26103370']
                             }
                         }//script
                     }//steps
